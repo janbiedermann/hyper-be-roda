@@ -23,7 +23,7 @@ end
 
 def copy(filename, source_dir, target_dir)
   target_path = File.join(target_dir, filename)
-  source_path = File.join(__FILE__,'..', source_dir, filename)
+  source_path = File.join(File.dirname(__FILE__),'..', source_dir, filename)
   if File.exist?(target_path)
     puts "File #{target_path} exists, not overwriting, you may check #{source_path} for necessary adjustments."
   else
@@ -37,7 +37,7 @@ def package_json
    # read existing package.json
    target = JSON.parse(File.read('package.json'))
    # read wanted config
-   source = JSON.parse(File.read(File.join(__FILE__,'..', 'config', 'package.json')))
+   source = JSON.parse(File.read(File.join(File.dirname(__FILE__),'..', 'config', 'package.json')))
    # merge
    target.merge!(source)
    # write

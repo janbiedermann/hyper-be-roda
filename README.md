@@ -1,4 +1,4 @@
-# roda-be-hyper
+# hyper-be-roda
 
 Server side configuration and helpers for using hyper-stack with roda
 

@@ -82,7 +82,7 @@ def gemfile
     File.write('Gemfile', content)
   else
     require 'bundler/cli/init'
-    Bundler::CLI::Init.new.run
+    Bundler::CLI::Init.new({}).run
     content = File.read('Gemfile')
     content << "\ngem 'roda'"
     content << "\ngem 'rake'"

@@ -55,7 +55,7 @@ def gemfile
   c_lexer = "\ngem 'c_lexer'"
   opal = "\ngem 'opal', github: 'janbiedermann/opal', branch: 'es6_import_export'"
   owcs = "\ngem 'opal-webpack-compile-server', '0.1.7', require: false"
-  store = "\ngem 'hyper-store', github: 'janbiedermann/hyper-store', branch: 'pinata'"
+  store = "\ngem 'hyper-store', github: 'janbiedermann/hyper-store', branch: 'ulysses'"
   component = "\ngem 'hyper-component', github: 'janbiedermann/hyper-react', branch: 'ulysses'"
 
   if File.exist?('Gemfile')
@@ -81,6 +81,7 @@ def gemfile
     content << "\n"
     File.write('Gemfile', content)
   else
+    require 'bundler/cli'
     require 'bundler/cli/init'
     Bundler::CLI::Init.new({}).run
     content = File.read('Gemfile')
@@ -102,7 +103,7 @@ mkdir('assets')
 mkdir('public')
 mkdir('webpack')
 mkdir('hyperloop')
-
+puts
 puts 'Webpack config:'
 copy('production.js', 'config/webpack', 'webpack')
 copy('development.js', 'config/webpack', 'webpack')

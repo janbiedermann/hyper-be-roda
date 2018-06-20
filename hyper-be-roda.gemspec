@@ -2,7 +2,7 @@ require_relative 'lib/hyper-be-roda/version'
 
 Gem::Specification.new do |s|
   s.name         = 'hyper-be-roda'
-  s.version      = Hyperloop::Resource::VERSION
+  s.version      = HyperBeRoda::VERSION
   s.author       = 'Jan Biedermann'
   s.email        = 'jan@kursator.de'
   s.homepage     = 'https://github.com/janbiedermann/hyper-be-roda'

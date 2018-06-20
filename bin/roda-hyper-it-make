@@ -1,0 +1,134 @@
+#!/usr/bin/env ruby_executable_hooks
+#
+# http://roda.jeremyevans.net/rdoc/files/doc/conventions_rdoc.html
+
+# this helps to find out which gems and versions are already there
+require 'fileutils'
+require 'json'
+require 'bundler'
+Bundler.require if File.exist?('Gemfile')
+
+cordova = ARGV[1] == 'cordova'
+# react_native = ARGV[1] == 'react-native'
+
+# helper methods
+def mkdir(dir_name)
+  if Dir.exist?(dir_name)
+    puts "Directory #{dir_name} exists, very nice."
+  else
+    puts "Creating directory: #{dir_name}"
+    Dir.mkdir(dir_name)
+  end
+end
+
+def copy(filename, source_dir, target_dir)
+  target_path = File.join(target_dir, filename)
+  source_path = File.join(__FILE__,'..', source_dir, filename)
+  if File.exist?(target_path)
+    puts "File #{target_path} exists, not overwriting, you may check #{source_path} for necessary adjustments."
+  else
+    puts "Creating file: #{target_path}"
+    FileUtils.cp(source_path, target_path)
+  end
+end
+
+def package_json
+ if File.exist?('package.json')
+   # read existing package.json
+   target = JSON.parse(File.read('package.json'))
+   # read wanted config
+   source = JSON.parse(File.read(File.join(__FILE__,'..', 'config', 'package.json')))
+   # merge
+   target.merge!(source)
+   # write
+   File.write('package.json', JSON.pretty_generate(target, indent: '  ', object_nl: "\n", array_nl: "\n"))
+ else
+   copy('package.json', 'config', '.')
+ end
+end
+
+def gemfile
+  #
+  es6 = "Please make sure the 'es6_import_export' branch is used for opal"
+  ulysses = "Please make sure the 'ulysses' branch is used for hyper-* gems"
+  # gem lines
+  c_lexer = "\ngem 'c_lexer'"
+  opal = "\ngem 'opal', github: 'janbiedermann/opal', branch: 'es6_import_export'"
+  owcs = "\ngem 'opal-webpack-compile-server', '0.1.7', require: false"
+  store = "\ngem 'hyper-store', github: 'janbiedermann/hyper-store', branch: 'pinata'"
+  component = "\ngem 'hyper-component', github: 'janbiedermann/hyper-react', branch: 'ulysses'"
+
+  if File.exist?('Gemfile')
+    content = File.read('Gemfile')
+
+    content << c_lexer unless defined?(CLexer)
+    unless defined?(Opal)
+      content << opal
+      content << owcs
+    else
+      puts es6
+    end
+    unless defined?(HyperStore)
+      content << store
+    else
+      puts
+    end
+    unless defined?(Hyperloop::Component)
+      content << component
+    else
+      puts ulysses
+    end
+    content << "\n"
+    File.write('Gemfile', content)
+  else
+    require 'bundler/cli/init'
+    Bundler::CLI::Init.new.run
+    content = File.read('Gemfile')
+    content << "\ngem 'roda'"
+    content << "\ngem 'rake'"
+    content << "\ngem 'puma'"
+    content << c_lexer
+    content << opal
+    content << owcs
+    content << store
+    content << component
+    content << "\n"
+    File.write('Gemfile', content)
+  end
+end
+
+# create directories for configuration and code
+mkdir('assets')
+mkdir('public')
+mkdir('webpack')
+mkdir('hyperloop')
+
+puts 'Webpack config:'
+copy('production.js', 'config/webpack', 'webpack')
+copy('development.js', 'config/webpack', 'webpack')
+copy('test.js', 'config/webpack', 'webpack')
+copy('cordova.js', 'config/webpack', 'webpack') if cordova
+# copy('react-native.js', 'config/webpack', 'webpack') if react_native
+puts
+puts 'Application entry points:'
+copy('app.js', 'config/entry', 'assets')
+copy('cordova.js', 'config/entry', 'assets') if cordova
+# copy('react-native.js', 'config/entry', 'assets') if react_native
+puts
+puts 'Procfile:'
+copy('Procfile', 'config', '.')
+puts
+puts 'package.json:'
+package_json
+puts
+puts 'Gemfile:'
+gemfile
+puts
+puts 'Things to do:'
+puts 'Please run:'
+puts '1. yarn install'
+puts '2. bundle install'
+puts '3. Check Procfile if it starts the server you want'
+puts '4. Add necessary requires to the server entry, e.g. config.ru:'
+puts "   require 'bundler'"
+puts '   Bundler.require'

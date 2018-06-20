@@ -3,6 +3,8 @@
 Server side configuration and helpers for using hyper-stack with roda
 
 ## usage
+`gem install hyper-be-roda` - install the gem
+
 `roda-hyper-it-make` - will setup a roda project with the necessary configuration
 
 options:

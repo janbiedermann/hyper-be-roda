@@ -54,7 +54,7 @@ def gemfile
   # gem lines
   c_lexer = "\ngem 'c_lexer'"
   opal = "\ngem 'opal', github: 'janbiedermann/opal', branch: 'es6_import_export'"
-  owcs = "\ngem 'opal-webpack-compile-server', '0.1.7', require: false"
+  owcs = "\ngem 'opal-webpack-compile-server', '~> 0.1.8', require: false"
   store = "\ngem 'hyper-store', github: 'janbiedermann/hyper-store', branch: 'ulysses'"
   component = "\ngem 'hyper-react', github: 'janbiedermann/hyper-react', branch: 'ulysses'"
 

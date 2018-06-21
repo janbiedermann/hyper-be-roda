@@ -54,6 +54,7 @@ def gemfile
   # gem lines
   c_lexer = "\ngem 'c_lexer'"
   opal = "\ngem 'opal', github: 'janbiedermann/opal', branch: 'es6_import_export'"
+  auto = "\ngem 'opal-autoloader'"
   owcs = "\ngem 'opal-webpack-compile-server', '~> 0.1.8', require: false"
   store = "\ngem 'hyper-store', github: 'janbiedermann/hyper-store', branch: 'ulysses'"
   component = "\ngem 'hyper-react', github: 'janbiedermann/hyper-react', branch: 'ulysses'"
@@ -90,6 +91,7 @@ def gemfile
     content << "\ngem 'puma'"
     content << c_lexer
     content << opal
+    content << auto
     content << owcs
     content << store
     content << component
@@ -103,6 +105,9 @@ mkdir('assets')
 mkdir('public')
 mkdir('webpack')
 mkdir('hyperloop')
+mkdir('hyperloop/components')
+mkdir('hyperloop/models')
+mkdir('hyperloop/stores')
 puts
 puts 'Webpack config:'
 copy('production.js', 'config/webpack', 'webpack')
@@ -124,6 +129,9 @@ package_json
 puts
 puts 'Gemfile:'
 gemfile
+puts
+puts 'Hyperloop loader:'
+copy('hyperloop_webpack_loader.rb', 'config/hyperloop', 'hyperloop')
 puts
 puts 'Things to do:'
 puts 'Please run:'

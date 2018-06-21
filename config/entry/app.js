@@ -1,5 +1,5 @@
 // import stylesheets
-import '../assets/stylesheets/app.scss';
+// import '../assets/stylesheets/app.scss';
 
 // basics for hyperloop
 import React from 'react';

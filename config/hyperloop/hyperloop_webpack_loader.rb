@@ -1,9 +1,7 @@
 require 'opal'
-require 'opal-jquery'
 require 'browser' # CLIENT ONLY
 require 'browser/delay' # CLIENT ONLY
-require 'opal/autoloader'
-require 'opal/autoloader_starter'
+require 'opal-autoloader'
 require 'hyper-store'
 require 'hyper-react'
 require 'reactrb/auto-import'

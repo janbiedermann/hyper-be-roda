@@ -102,6 +102,7 @@ end
 
 # create directories for configuration and code
 mkdir('assets')
+mkdir('assets/stylesheets')
 mkdir('public')
 mkdir('webpack')
 mkdir('hyperloop')

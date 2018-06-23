@@ -12,16 +12,16 @@ cordova = ARGV[1] == 'cordova'
 # react_native = ARGV[1] == 'react-native'
 
 # helper methods
-def mkdir(dir_name)
+def makedir(dir_name)
   if Dir.exist?(dir_name)
     puts "Directory #{dir_name} exists, very nice."
   else
     puts "Creating directory: #{dir_name}"
-    Dir.mkdir(dir_name)
+    Dir.makedir(dir_name)
   end
 end
 
-def copy(filename, source_dir, target_dir)
+def confcopy(filename, source_dir, target_dir)
   target_path = File.join(target_dir, filename)
   source_path = File.join(File.dirname(__FILE__),'..', source_dir, filename)
   if File.exist?(target_path)
@@ -34,6 +34,7 @@ end
 
 def package_json
  if File.exist?('package.json')
+   puts "Merging new config with existing one."
    # read existing package.json
    target = JSON.parse(File.read('package.json'))
    # read wanted config
@@ -43,7 +44,7 @@ def package_json
    # write
    File.write('package.json', JSON.pretty_generate(target, indent: '  ', object_nl: "\n", array_nl: "\n"))
  else
-   copy('package.json', 'config', '.')
+   confcopy('package.json', 'config', '.')
  end
 end
 
@@ -101,29 +102,29 @@ def gemfile
 end
 
 # create directories for configuration and code
-mkdir('assets')
-mkdir('assets/stylesheets')
-mkdir('public')
-mkdir('webpack')
-mkdir('hyperloop')
-mkdir('hyperloop/components')
-mkdir('hyperloop/models')
-mkdir('hyperloop/stores')
+makedir('assets')
+makedir('assets/stylesheets')
+makedir('public')
+makedir('webpack')
+makedir('hyperloop')
+makedir('hyperloop/components')
+makedir('hyperloop/models')
+makedir('hyperloop/stores')
 puts
 puts 'Webpack config:'
-copy('production.js', 'config/webpack', 'webpack')
-copy('development.js', 'config/webpack', 'webpack')
-copy('test.js', 'config/webpack', 'webpack')
-copy('cordova.js', 'config/webpack', 'webpack') if cordova
-# copy('react-native.js', 'config/webpack', 'webpack') if react_native
+confcopy('production.js', 'config/webpack', 'webpack')
+confcopy('development.js', 'config/webpack', 'webpack')
+confcopy('test.js', 'config/webpack', 'webpack')
+confcopy('cordova.js', 'config/webpack', 'webpack') if cordova
+# confcopy('react-native.js', 'config/webpack', 'webpack') if react_native
 puts
 puts 'Application entry points:'
-copy('app.js', 'config/entry', 'assets')
-copy('cordova.js', 'config/entry', 'assets') if cordova
-# copy('react-native.js', 'config/entry', 'assets') if react_native
+confcopy('app.js', 'config/entry', 'assets')
+confcopy('cordova.js', 'config/entry', 'assets') if cordova
+# confcopy('react-native.js', 'config/entry', 'assets') if react_native
 puts
 puts 'Procfile:'
-copy('Procfile', 'config', '.')
+confcopy('Procfile', 'config', '.')
 puts
 puts 'package.json:'
 package_json
@@ -132,7 +133,7 @@ puts 'Gemfile:'
 gemfile
 puts
 puts 'Hyperloop loader:'
-copy('hyperloop_webpack_loader.rb', 'config/hyperloop', 'hyperloop')
+confcopy('hyperloop_webpack_loader.rb', 'config/hyperloop', 'hyperloop')
 puts
 puts 'Things to do:'
 puts 'Please run:'

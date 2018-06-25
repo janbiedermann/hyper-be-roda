@@ -17,7 +17,7 @@ def makedir(dir_name)
     puts "Directory #{dir_name} exists, very nice."
   else
     puts "Creating directory: #{dir_name}"
-    Dir.makedir(dir_name)
+    Dir.mkdir(dir_name)
   end
 end
 
@@ -59,6 +59,7 @@ def gemfile
   owcs = "\ngem 'opal-webpack-compile-server', '~> 0.1.8', require: false"
   store = "\ngem 'hyper-store', github: 'janbiedermann/hyper-store', branch: 'ulysses'"
   component = "\ngem 'hyper-react', github: 'janbiedermann/hyper-react', branch: 'ulysses'"
+  router = "\ngem 'hyper-router', github: 'janbiedermann/hyper-router', branch: 'ulysses'"
 
   if File.exist?('Gemfile')
     content = File.read('Gemfile')
@@ -80,6 +81,11 @@ def gemfile
     else
       puts ulysses
     end
+    unless defined?(Hyperloop::Router)
+      content << router
+    else
+      puts ulysses
+    end
     content << "\n"
     File.write('Gemfile', content)
   else
@@ -96,6 +102,7 @@ def gemfile
     content << owcs
     content << store
     content << component
+    content << router
     content << "\n"
     File.write('Gemfile', content)
   end

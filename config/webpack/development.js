@@ -40,8 +40,7 @@ module.exports = {
     },
     plugins: [
         // both for hot reloading
-        new webpack.NamedModulesPlugin(),
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.NamedModulesPlugin()
     ],
     module: {
         rules: [
